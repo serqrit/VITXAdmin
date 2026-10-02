@@ -78,13 +78,6 @@ root ของ `VITXAdmin` และ push เข้า `main` GitHub Pages จ�
 - ปุ่มเข้าสู่ระบบ รีเฟรช และบันทึก แสดงสถานะกำลังทำงานและล็อกปุ่มจนคำขอเสร็จ
 - คำอธิบายกิจกรรมเป็นข้อความที่แสดงบนการ์ดใน Launcher จึงใช้แจ้งข่าวกิจกรรมได้
 - Usage log, login attempts และ admin audit log
-- Operations Center แสดง API, Database, Update Server, Active Sessions,
-  Daily Active Users, สถิติสำเร็จ/ล้มเหลว และ Error Report จาก Launcher
-- Feature Flags ระดับฟังก์ชันย่อย, Remote Launcher Config และประกาศ
-  `INFO / WARNING / CRITICAL`
-- Stable/Beta channel รายผู้ใช้ พร้อม Block และ Fallback เวอร์ชัน
-- รองรับ TOTP MFA สำหรับ Admin และบังคับ `aal2` กับ RPC ผู้ดูแล
-- คู่มือ Backup/Restore และการทดสอบกู้คืนอยู่ที่ `../docs/OPERATIONS.md`
 - เก็บรหัสผ่านด้วย bcrypt (`pgcrypto`) และเก็บเฉพาะ SHA-256 digest ของ session token
 - RLS ปิดการอ่านตารางโดยตรง ทุกคำสั่งผ่าน RPC ที่ตรวจสิทธิ์
 
@@ -152,7 +145,4 @@ path ไว้แล้ว รายละเอียดภายในไม�
   Device RPC, Force Logout และ Reset Device พร้อม Admin audit
 - `supabase/migrations/008_device_login_history.sql` ประวัติ Login แยกตามอุปกรณ์,
   สถิติย้อนหลัง 30 วัน และ Admin RPC สำหรับอ่านประวัติ 100 รายการล่าสุด
-- `supabase/migrations/009_operations_and_runtime_controls.sql` Operations Center,
-  Error Report, Feature Flags, Remote Config, Announcement, MFA, Retention และ
-  Stable/Beta/Blocked release policy
 - `.openai/hosting.json` การตั้งค่า OpenAI Sites
