@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=9">
+  <link rel="stylesheet" href="./styles.css?v=10">
   <script src="./config.js"></script>
 </head>
 <body>
@@ -60,6 +60,7 @@
         <button class="nav-item" data-page="activities"><span>◇</span>กิจกรรม</button>
         <button class="nav-item" data-page="system"><span>⚙</span>ตั้งค่าระบบ</button>
         <button class="nav-item" data-page="updates"><span>↻</span>อัปเดต</button>
+        <button class="nav-item" data-page="operations"><span>⌁</span>Operations</button>
         <button class="nav-item" data-page="logs"><span>≡</span>ประวัติ</button>
       </nav>
       <div class="sidebar-foot">
@@ -128,6 +129,32 @@
         <div id="releasesList" class="release-list"></div>
       </section>
 
+      <section id="page-operations" class="page">
+        <div class="section-intro"><div><p class="eyebrow">OPERATIONS CENTER</p><h2>สถานะ ความปลอดภัย และการควบคุมระยะไกล</h2><p>ตรวจสุขภาพระบบ ตั้งค่าการทำงาน ประกาศ Error Report และนโยบายเก็บข้อมูล</p></div><button id="refreshOperationsBtn" class="btn subtle">↻ ตรวจใหม่</button></div>
+        <div id="healthGrid" class="health-grid"></div>
+        <div class="grid two operations-grid">
+          <form id="runtimeForm" class="card">
+            <p class="eyebrow">REMOTE CONFIG</p><h2>ค่า Launcher จาก Server</h2>
+            <div class="field-row"><label>Browser timeout (ms)<input name="browser_timeout_ms" type="number" min="5000" max="120000"></label><label>Request timeout (ms)<input name="request_timeout_ms" type="number" min="5000" max="120000"></label></div>
+            <div class="field-row"><label>Delay ต่ำสุด (วินาที)<input name="delay_min_seconds" type="number" min="0" max="30" step="0.1"></label><label>Delay สูงสุด (วินาที)<input name="delay_max_seconds" type="number" min="0" max="30" step="0.1"></label></div>
+            <div class="field-row"><label>Retry สูงสุด<input name="max_retry" type="number" min="0" max="10"></label><label>เก็บ Log (วัน)<input name="retention_days" type="number" min="7" max="730"></label></div>
+            <label class="switch-row"><div><b>ส่ง Error Report</b><small>ส่งเฉพาะชนิดและบริบทที่ปลอดภัย</small></div><input name="error_reporting_enabled" type="checkbox"><span class="switch"></span></label>
+            <div class="dialog-actions"><button id="cleanupBtn" type="button" class="btn danger">ล้างข้อมูลเก่า</button><button class="btn primary" type="submit">บันทึก Config</button></div>
+          </form>
+          <article class="card">
+            <p class="eyebrow">ADMIN SECURITY</p><h2>Multi-factor Authentication</h2>
+            <p class="muted-copy">ตั้งค่า TOTP ด้วยแอป Authenticator แล้วจึงเปิดบังคับ MFA สำหรับบัญชีผู้ดูแลนี้</p>
+            <div id="mfaStatus" class="security-panel"></div>
+            <div class="dialog-actions"><button id="setupMfaBtn" class="btn subtle">ตั้งค่า MFA</button><button id="toggleMfaBtn" class="btn primary">เปิดบังคับ MFA</button></div>
+          </article>
+        </div>
+        <div class="grid two operations-grid">
+          <article class="card"><div class="card-head"><div><p class="eyebrow">ANNOUNCEMENTS</p><h2>ประกาศใน Launcher</h2></div><button id="addAnnouncementBtn" class="btn primary">＋ เพิ่มประกาศ</button></div><div id="announcementsList" class="compact-list"></div></article>
+          <article class="card"><div class="card-head"><div><p class="eyebrow">FEATURE FLAGS</p><h2>Kill Switch รายฟังก์ชัน</h2></div><button id="addFeatureBtn" class="btn primary">＋ เพิ่ม Flag</button></div><div id="featureFlagsList" class="compact-list"></div></article>
+        </div>
+        <article class="card table-card operations-grid"><div class="card-head padded"><div><p class="eyebrow">ERROR REPORTING</p><h2>Error จาก Launcher</h2></div><span id="errorCount" class="badge warn">0 รายการ</span></div><div class="table-wrap"><table><thead><tr><th>เวลา</th><th>Error ID</th><th>ผู้ใช้</th><th>Activity</th><th>ประเภท</th><th>Version</th><th></th></tr></thead><tbody id="errorsTable"></tbody></table></div></article>
+      </section>
+
       <section id="page-logs" class="page">
         <div class="tabs"><button class="tab active" data-log="usage">การใช้งาน</button><button class="tab" data-log="audit">ผู้ดูแล</button></div>
         <article class="card table-card"><div class="table-wrap"><table><thead id="logsHead"></thead><tbody id="logsTable"></tbody></table></div></article>
@@ -144,6 +171,7 @@
       <div class="field-row"><label>เริ่มใช้งาน<input name="starts_at" type="datetime-local" required></label><label>หมดอายุ<input name="expires_at" type="datetime-local" required></label></div>
       <div id="userApprovalNote" class="approval-note hidden"><b>บัญชีนี้สมัครจากหน้าแอปและกำลังรออนุมัติ</b><span>ทุกกิจกรรมถูกปิดไว้ คุณต้องเลือกสิทธิ์ด้านล่างก่อนเปิดบัญชี</span></div>
       <label class="switch-row edit-only"><div><b id="userEnabledTitle">เปิดใช้งานบัญชี</b><small id="userEnabledHelp"></small></div><input name="enabled" type="checkbox" checked><span class="switch"></span></label>
+      <label class="edit-only">Update channel<select name="update_channel"><option value="stable">Stable</option><option value="beta">Beta</option></select><small>ผู้ใช้ Beta จะได้รับรุ่นทดสอบก่อนผู้ใช้ทั่วไป</small></label>
       <label>หมายเหตุ<textarea name="notes" rows="3"></textarea></label>
       <div id="userDevices" class="device-panel edit-only">
         <div class="device-panel-head"><div><p class="eyebrow">DEVICE MANAGEMENT</p><b>อุปกรณ์ที่เคยเข้าใช้งาน</b></div><button id="forceLogoutAllBtn" type="button" class="btn danger">Force Logout ทุกเครื่อง</button></div>
@@ -175,11 +203,44 @@
 
   <dialog id="releaseDialog"><form id="releaseForm" class="dialog-form">
     <div class="dialog-head"><div><p class="eyebrow">NEW RELEASE</p><h2>เพิ่มเวอร์ชัน</h2></div><button type="button" class="close-btn" data-close>×</button></div>
-    <div class="field-row"><label>เวอร์ชัน<input name="version" required placeholder="1.1.0"></label><label>ชื่อ Release<input name="title" required></label></div>
-    <label>Private download path<input name="download_path" placeholder="updates/1.1.0/update.zip"></label>
+    <div class="field-row"><label>เวอร์ชัน<input name="version" required placeholder="1.1.0 หรือ 1.1.0-beta.1"></label><label>ชื่อ Release<input name="title" required></label></div>
+    <label>Signed manifest URL<input name="download_path" type="url" placeholder="https://github.com/.../update.json"></label>
     <label>SHA-256<input name="sha256" pattern="[a-fA-F0-9]{64}" placeholder="เว้นว่างได้"></label>
+    <div class="field-row"><label>Channel<select name="channel"><option value="stable">Stable</option><option value="beta">Beta</option></select></label><label>สถานะ<select name="status"><option value="active">Active</option><option value="blocked">Blocked</option><option value="retired">Retired</option></select></label></div>
+    <label>Fallback version<input name="fallback_version" placeholder="เช่น 1.0.0 เมื่อบล็อกรุ่นนี้"></label>
     <div class="field-row"><label class="switch-row"><div><b>เปิดใช้งาน</b></div><input name="enabled" type="checkbox" checked><span class="switch"></span></label><label class="switch-row"><div><b>บังคับอัปเดต</b></div><input name="required" type="checkbox"><span class="switch"></span></label></div>
     <div class="dialog-actions"><button type="button" class="btn subtle" data-close>ยกเลิก</button><button class="btn primary">บันทึก</button></div>
+  </form></dialog>
+
+  <dialog id="announcementDialog"><form id="announcementForm" class="dialog-form">
+    <div class="dialog-head"><div><p class="eyebrow">LAUNCHER ANNOUNCEMENT</p><h2>จัดการประกาศ</h2></div><button type="button" class="close-btn" data-close>×</button></div>
+    <input name="id" type="hidden"><label>หัวข้อ<input name="title" maxlength="120" required></label><label>ข้อความ<textarea name="message" maxlength="1000" rows="4" required></textarea></label>
+    <div class="field-row"><label>ระดับ<select name="severity"><option value="info">INFO</option><option value="warning">WARNING</option><option value="critical">CRITICAL</option></select></label><label>กิจกรรม<select name="activity_key"><option value="">ทุกกิจกรรม</option></select></label></div>
+    <div class="field-row"><label>เริ่มแสดง<input name="starts_at" type="datetime-local" required></label><label>หยุดแสดง<input name="ends_at" type="datetime-local"></label></div>
+    <label class="switch-row"><div><b>เปิดใช้งาน</b></div><input name="enabled" type="checkbox" checked><span class="switch"></span></label>
+    <div class="dialog-actions"><button type="button" class="btn subtle" data-close>ยกเลิก</button><button class="btn primary">บันทึกประกาศ</button></div>
+  </form></dialog>
+
+  <dialog id="featureDialog"><form id="featureForm" class="dialog-form">
+    <div class="dialog-head"><div><p class="eyebrow">FEATURE FLAG</p><h2>เพิ่มฟังก์ชันย่อย</h2></div><button type="button" class="close-btn" data-close>×</button></div>
+    <label>กิจกรรม<select name="activity_key" required></select></label>
+    <label>Feature key<input name="feature_key" required pattern="[a-z0-9_-]{2,50}" placeholder="เช่น redeem"></label>
+    <label>ชื่อที่แสดง<input name="name" required placeholder="เช่น ใช้โค้ด"></label>
+    <label class="switch-row"><div><b>เปิดใช้งานทันที</b></div><input name="enabled" type="checkbox"><span class="switch"></span></label>
+    <div class="dialog-actions"><button type="button" class="btn subtle" data-close>ยกเลิก</button><button class="btn primary">บันทึก</button></div>
+  </form></dialog>
+
+  <dialog id="mfaDialog"><form id="mfaForm" class="dialog-form">
+    <div class="dialog-head"><div><p class="eyebrow">TOTP MFA</p><h2>เชื่อมต่อ Authenticator</h2></div><button type="button" class="close-btn" data-close>×</button></div>
+    <p class="dialog-help">สแกน QR ด้วย Google Authenticator, Microsoft Authenticator หรือแอป TOTP แล้วกรอกรหัส 6 หลัก</p>
+    <div id="mfaQr" class="mfa-qr"></div><input name="factor_id" type="hidden"><label>รหัสยืนยัน<input name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required></label>
+    <div class="dialog-actions"><button type="button" class="btn subtle" data-close>ยกเลิก</button><button class="btn primary">ยืนยัน MFA</button></div>
+  </form></dialog>
+
+  <dialog id="mfaChallengeDialog"><form id="mfaChallengeForm" class="dialog-form">
+    <div class="dialog-head"><div><p class="eyebrow">ADMIN MFA</p><h2>ยืนยันรหัส 6 หลัก</h2></div></div>
+    <input name="factor_id" type="hidden"><label>Authenticator code<input name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required autofocus></label><p class="form-error"></p>
+    <div class="dialog-actions"><button class="btn primary wide">ยืนยันและเข้าสู่ระบบ</button></div>
   </form></dialog>
 
   <dialog id="recoveryCodeDialog"><div class="dialog-form">
@@ -189,6 +250,6 @@
     <div class="dialog-actions"><button id="copyRecoveryBtn" type="button" class="btn subtle">คัดลอก</button><button type="button" class="btn primary" data-close>ปิด</button></div>
   </div></dialog>
 
-  <script type="module" src="./app.js?v=11"></script>
+  <script type="module" src="./app.js?v=12"></script>
 </body>
 </html>
