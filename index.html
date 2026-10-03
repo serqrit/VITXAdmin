@@ -62,6 +62,7 @@
         <button class="nav-item" data-page="updates"><span>↻</span>อัปเดต</button>
         <button class="nav-item" data-page="operations"><span>⌁</span>Operations</button>
         <button class="nav-item" data-page="feedback"><span>✉</span>ข้อเสนอแนะ</button>
+        <button class="nav-item" data-page="requests"><span>＋</span>คำขอสิทธิ์</button>
         <button class="nav-item" data-page="logs"><span>≡</span>ประวัติ</button>
       </nav>
       <div class="sidebar-foot">
@@ -165,6 +166,11 @@
         <div class="section-intro"><div><p class="eyebrow">USER FEEDBACK</p><h2>ข้อเสนอแนะจากผู้ใช้</h2><p>อ่านข้อความที่ส่งจาก VITX Launcher พร้อมบัญชี กิจกรรม เวอร์ชัน และอุปกรณ์</p></div><div class="feedback-toolbar"><select id="feedbackStatusFilter"><option value="">ทุกสถานะ</option><option value="new">ใหม่</option><option value="reviewing">กำลังตรวจ</option><option value="resolved">ปิดแล้ว</option><option value="archived">เก็บถาวร</option></select><button id="refreshFeedbackBtn" class="btn subtle">↻ รีเฟรช</button></div></div>
         <div id="feedbackList" class="feedback-list"><div class="empty">กำลังโหลด…</div></div>
       </section>
+
+      <section id="page-requests" class="page">
+        <div class="section-intro"><div><p class="eyebrow">ACTIVITY ACCESS</p><h2>คำขอเปิดสิทธิ์กิจกรรม</h2><p>อนุมัติแล้วระบบจะเปิดสิทธิ์กิจกรรมนั้นให้ผู้ใช้โดยอัตโนมัติ</p></div><button id="refreshRequestsBtn" class="btn subtle">↻ รีเฟรช</button></div>
+        <div id="accessRequestsList" class="feedback-list"><div class="empty">กำลังโหลด…</div></div>
+      </section>
     </main>
   </div>
 
@@ -222,6 +228,8 @@
     <div class="dialog-head"><div><p class="eyebrow">LAUNCHER ANNOUNCEMENT</p><h2>จัดการประกาศ</h2></div><button type="button" class="close-btn" data-close>×</button></div>
     <input name="id" type="hidden"><label>หัวข้อ<input name="title" maxlength="120" required></label><label>ข้อความ<textarea name="message" maxlength="1000" rows="4" required></textarea></label>
     <div class="field-row"><label>ระดับ<select name="severity"><option value="info">INFO</option><option value="warning">WARNING</option><option value="critical">CRITICAL</option></select></label><label>กิจกรรม<select name="activity_key"><option value="">ทุกกิจกรรม</option></select></label></div>
+    <div class="field-row"><label>ช่องทาง<select name="target_channel"><option value="">Stable และ Beta</option><option value="stable">Stable เท่านั้น</option><option value="beta">Beta เท่านั้น</option></select></label><label>เวอร์ชัน<input name="target_version" placeholder="เว้นว่าง = ทุกเวอร์ชัน"></label></div>
+    <label>ผู้ใช้เฉพาะราย<select name="target_user_id"><option value="">ผู้ใช้ทุกคน</option></select></label>
     <div class="field-row"><label>เริ่มแสดง<input name="starts_at" type="datetime-local" required></label><label>หยุดแสดง<input name="ends_at" type="datetime-local"></label></div>
     <label class="switch-row"><div><b>เปิดใช้งาน</b></div><input name="enabled" type="checkbox" checked><span class="switch"></span></label>
     <div class="dialog-actions"><button type="button" class="btn subtle" data-close>ยกเลิก</button><button class="btn primary">บันทึกประกาศ</button></div>
@@ -256,6 +264,6 @@
     <div class="dialog-actions"><button id="copyRecoveryBtn" type="button" class="btn subtle">คัดลอก</button><button type="button" class="btn primary" data-close>ปิด</button></div>
   </div></dialog>
 
-  <script type="module" src="./app.js?v=13"></script>
+  <script type="module" src="./app.js?v=14"></script>
 </body>
 </html>
