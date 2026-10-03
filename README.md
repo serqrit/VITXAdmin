@@ -78,6 +78,8 @@ root ของ `VITXAdmin` และ push เข้า `main` GitHub Pages จ�
 - ปุ่มเข้าสู่ระบบ รีเฟรช และบันทึก แสดงสถานะกำลังทำงานและล็อกปุ่มจนคำขอเสร็จ
 - คำอธิบายกิจกรรมเป็นข้อความที่แสดงบนการ์ดใน Launcher จึงใช้แจ้งข่าวกิจกรรมได้
 - Usage log, login attempts และ admin audit log
+- ผู้ใช้ส่งข้อเสนอแนะจาก Launcher ได้ โดยผูกบัญชี กิจกรรม เวอร์ชัน และอุปกรณ์
+  หน้า Admin อ่าน กรอง บันทึกภายใน และเปลี่ยนสถานะเป็นใหม่/กำลังตรวจ/ปิดแล้วได้
 - Operations Center แสดง API, Database, Update Server, Active Sessions,
   Daily Active Users, สถิติสำเร็จ/ล้มเหลว และ Error Report จาก Launcher
 - Feature Flags ระดับฟังก์ชันย่อย, Remote Launcher Config และประกาศ
@@ -155,4 +157,6 @@ path ไว้แล้ว รายละเอียดภายในไม�
 - `supabase/migrations/009_operations_and_runtime_controls.sql` Operations Center,
   Error Report, Feature Flags, Remote Config, Announcement, MFA, Retention และ
   Stable/Beta/Blocked release policy
+- `supabase/migrations/010_user_feedback.sql` กล่องข้อเสนอแนะจาก Launcher,
+  rate limit, RLS และขั้นตอนติดตามสถานะใน Admin
 - `.openai/hosting.json` การตั้งค่า OpenAI Sites

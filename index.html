@@ -61,6 +61,7 @@
         <button class="nav-item" data-page="system"><span>⚙</span>ตั้งค่าระบบ</button>
         <button class="nav-item" data-page="updates"><span>↻</span>อัปเดต</button>
         <button class="nav-item" data-page="operations"><span>⌁</span>Operations</button>
+        <button class="nav-item" data-page="feedback"><span>✉</span>ข้อเสนอแนะ</button>
         <button class="nav-item" data-page="logs"><span>≡</span>ประวัติ</button>
       </nav>
       <div class="sidebar-foot">
@@ -159,6 +160,11 @@
         <div class="tabs"><button class="tab active" data-log="usage">การใช้งาน</button><button class="tab" data-log="audit">ผู้ดูแล</button></div>
         <article class="card table-card"><div class="table-wrap"><table><thead id="logsHead"></thead><tbody id="logsTable"></tbody></table></div></article>
       </section>
+
+      <section id="page-feedback" class="page">
+        <div class="section-intro"><div><p class="eyebrow">USER FEEDBACK</p><h2>ข้อเสนอแนะจากผู้ใช้</h2><p>อ่านข้อความที่ส่งจาก VITX Launcher พร้อมบัญชี กิจกรรม เวอร์ชัน และอุปกรณ์</p></div><div class="feedback-toolbar"><select id="feedbackStatusFilter"><option value="">ทุกสถานะ</option><option value="new">ใหม่</option><option value="reviewing">กำลังตรวจ</option><option value="resolved">ปิดแล้ว</option><option value="archived">เก็บถาวร</option></select><button id="refreshFeedbackBtn" class="btn subtle">↻ รีเฟรช</button></div></div>
+        <div id="feedbackList" class="feedback-list"><div class="empty">กำลังโหลด…</div></div>
+      </section>
     </main>
   </div>
 
@@ -250,6 +256,6 @@
     <div class="dialog-actions"><button id="copyRecoveryBtn" type="button" class="btn subtle">คัดลอก</button><button type="button" class="btn primary" data-close>ปิด</button></div>
   </div></dialog>
 
-  <script type="module" src="./app.js?v=12"></script>
+  <script type="module" src="./app.js?v=13"></script>
 </body>
 </html>
